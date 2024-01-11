@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Calculator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        #calculator {
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        #display {
+            height: 60px;
+            background-color: #333;
+            color: #fff;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 0 10px;
+            font-size: 1.5em;
+        }
+
+        #buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        button {
+            font-size: 1.2em;
+            padding: 15px;
+            border: none;
+            cursor: pointer;
+            background-color: #fff;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="calculator">
+        <div id="display">0</div>
+        <div id="buttons">
+            <button onclick="appendCharacter('7')">7</button>
+            <button onclick="appendCharacter('8')">8</button>
+            <button onclick="appendCharacter('9')">9</button>
+            <button onclick="setOperation('+')">+</button>
+
+            <button onclick="appendCharacter('4')">4</button>
+            <button onclick="appendCharacter('5')">5</button>
+            <button onclick="appendCharacter('6')">6</button>
+            <button onclick="setOperation('-')">-</button>
+
+            <button onclick="appendCharacter('1')">1</button>
+            <button onclick="appendCharacter('2')">2</button>
+            <button onclick="appendCharacter('3')">3</button>
+            <button onclick="setOperation('*')">*</button>
+
+            <button onclick="appendCharacter('0')">0</button>
+            <button onclick="clearDisplay()">C</button>
+            <button onclick="calculate()">=</button>
+            <button onclick="setOperation('/')">/</button>
+
+            <!-- New Reset (AC) button -->
+            <button onclick="resetCalculator()">AC</button>
+        </div>
+    </div>
+
+    <script>
+        let currentInput = '';
+        let currentOperation = null;
+        let displayElement = document.getElementById('display');
+
+        function appendCharacter(character) {
+            currentInput += character;
+            updateDisplay();
+        }
+
+        function setOperation(operation) {
+            currentOperation = operation;
+            appendCharacter(operation);
+        }
+
+        function clearDisplay() {
+            currentInput = '';
+            currentOperation = null;
+            updateDisplay();
+        }
+
+        function resetCalculator() {
+            currentInput = '';
+            currentOperation = null;
+            updateDisplay();
+        }
+
+        function calculate() {
+            if (currentOperation !== null) {
+                const expression = currentInput.replace(/[^-()\d/*+.]/g, '');
+                try {
+                    currentInput = eval(expression);
+                    currentOperation = null;
+                    updateDisplay();
+                } catch (error) {
+                    currentInput = 'Error';
+                    currentOperation = null;
+                    updateDisplay();
+                }
+            }
+        }
+
+        function updateDisplay() {
+            displayElement.textContent = currentInput || '0';
+        }
+    </script>
+</body>
+</html>
